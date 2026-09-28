@@ -1,0 +1,703 @@
+html
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>从睡眠分期到个体健康决策 · 可穿戴睡眠监测的算法边界、竞品洞察与产品定义</title>
+<style>
+:root{
+  --bg:#F6F5F2; --card:#FFFFFF; --line:#E4E2DC; --line2:#D3D1C7;
+  --t1:#25241F; --t2:#5F5E5A; --t3:#8C8A84;
+  --apple:#185FA5; --apple-l:#E6F1FB;
+  --v4:#534AB7;   --v4-l:#EEEDFE;
+  --v5:#BA7517;   --v5-l:#FAEEDA;
+  --ok:#3B6D11;   --warn:#A32D2D; --warn-l:#FCEBEB;
+  --amb:#8A6D3B;  --amb-l:#F4EDE0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--t1);
+  font-family:system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  font-size:14px;line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px 96px}
+
+/* ===== header ===== */
+header{background:var(--card);border-bottom:.5px solid var(--line);position:sticky;top:0;z-index:60}
+.hd{max-width:1080px;margin:0 auto;padding:14px 24px 0}
+.hd-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+h1{font-size:20px;font-weight:600;margin:0 0 2px}
+.sub{font-size:12.5px;color:var(--t2);margin:0}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{font:inherit;font-size:12.5px;padding:5px 12px;border:.5px solid var(--line2);
+  background:var(--card);color:var(--t1);border-radius:8px;cursor:pointer;white-space:nowrap}
+.btn:hover{background:#F1EFE8}
+nav{display:flex;gap:2px;margin-top:12px;overflow-x:auto;scrollbar-width:thin}
+nav button{font:inherit;font-size:13px;padding:9px 14px 11px;border:0;background:transparent;
+  color:var(--t2);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
+nav button:hover{color:var(--t1)}
+nav button.on{color:var(--t1);font-weight:600;border-bottom-color:var(--t1)}
+
+section{display:none}
+section.on{display:block;padding-top:28px}
+
+/* ===== 文字层级 ===== */
+h2{font-size:20px;font-weight:600;margin:36px 0 6px;padding-top:4px;line-height:1.4}
+h2:first-child{margin-top:4px}
+h3{font-size:15px;font-weight:600;margin:26px 0 6px;color:var(--t1)}
+h4{font-size:13.5px;font-weight:600;margin:0 0 4px}
+p{font-size:14px;color:var(--t2);margin:0}
+.lead{font-size:14px;color:var(--t2);margin:0 0 18px;max-width:780px}
+b,strong{font-weight:600;color:var(--t1)}
+
+/* ===== 卡片 ===== */
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.card{background:var(--card);border:.5px solid var(--line);border-radius:12px;padding:16px 18px;min-width:0}
+.card p{font-size:13px}
+.ins{background:var(--card);border:.5px solid var(--line);border-left:2.5px solid var(--t1);
+  border-radius:10px;padding:12px 16px;margin:12px 0 28px;font-size:13.5px;max-width:820px}
+.ins .tag{display:inline-block;font-size:11px;color:var(--t3);border:.5px solid var(--line2);
+  border-radius:5px;padding:0 6px;margin-right:8px;vertical-align:1.5px;white-space:nowrap}
+
+.chart{background:var(--card);border:.5px solid var(--line);border-radius:12px;padding:8px 12px 12px;min-width:0}
+.cap{font-size:12.5px;color:var(--t2);padding:2px 4px 8px;max-width:820px}
+.cap b{font-weight:600;color:var(--t1)}
+
+.htmlbox{width:100%;overflow-x:auto}
+.htmlbox > *{min-width:0}
+
+/* ===== hero / 首页 ===== */
+.hero{background:var(--card);border:.5px solid var(--line);border-radius:14px;padding:28px 30px;margin-top:26px}
+.hero .eyebrow{font-size:12px;color:var(--t3);letter-spacing:.04em;margin:0 0 10px}
+.hero h2{font-size:24px;font-weight:600;margin:0 0 12px;line-height:1.45;padding:0;max-width:820px}
+.hero .oneline{font-size:14.5px;color:var(--t2);margin:0 0 18px;max-width:780px}
+.hero-compact{padding:22px 26px;margin-top:18px}
+.hero-compact h2{font-size:20px}
+
+.kpi{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.kpi .k{background:var(--card);border:.5px solid var(--line);border-radius:11px;padding:14px 16px;min-width:0}
+.kpi .k .lb{font-size:12px;color:var(--t3)}
+.kpi .k .vl{font-size:22px;font-weight:600;line-height:1.3;margin-top:4px}
+.kpi .k .vl.sm{font-size:15px}
+.kpi .k .nt{font-size:11.5px;color:var(--t3);margin-top:3px}
+
+/* ===== 表格 ===== */
+table{width:100%;border-collapse:collapse;font-size:12.5px;table-layout:fixed}
+th,td{text-align:left;padding:7px 9px;border-bottom:.5px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--t2);font-size:12px;background:#FBFAF7;white-space:nowrap}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tblwrap{background:var(--card);border:.5px solid var(--line);border-radius:12px;
+  padding:4px 6px;overflow-x:auto}
+
+.pill{display:inline-block;font-size:11px;padding:1px 8px;border-radius:20px;
+  border:.5px solid var(--line2);color:var(--t2);white-space:nowrap}
+.pill.apple{color:var(--apple);border-color:#B5D4F4;background:var(--apple-l)}
+.pill.v4{color:var(--v4);border-color:#CECBF6;background:var(--v4-l)}
+.pill.v5{color:var(--v5);border-color:#FAC775;background:var(--v5-l)}
+.pill.ok{color:var(--ok);border-color:#CDE3B4;background:#F0F7E6}
+.pill.warn{color:var(--warn);border-color:#F7C1C1;background:var(--warn-l)}
+.pill.amb{color:var(--amb);border-color:#E3D4B8;background:var(--amb-l)}
+
+details{background:var(--card);border:.5px solid var(--line);border-radius:12px;padding:0;margin:14px 0}
+details summary{cursor:pointer;padding:12px 16px;font-size:13.5px;font-weight:600;list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary:before{content:"▸ ";color:var(--t3)}
+details[open] summary:before{content:"▾ "}
+details .body{padding:0 16px 16px;font-size:13px;color:var(--t2);max-width:820px}
+details ol,details ul{margin:6px 0;padding-left:20px}
+details li{margin:5px 0}
+
+footer{margin-top:52px;padding-top:18px;border-top:.5px solid var(--line);font-size:12px;color:var(--t3)}
+
+/* ===== 可视化通用组件 ===== */
+.hz{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start}
+.hz-item{flex:1;min-width:200px}
+.zone-bar{display:flex;height:22px;border-radius:6px;overflow:hidden;width:100%;background:var(--line)}
+.zone-seg{display:flex;align-items:center;justify-content:center;font-size:10.5px;color:#fff;white-space:nowrap}
+.z1{background:#C9A65A}.z2{background:#8C8A84}.z3{background:#534AB7}.z4{background:#185FA5}
+.zone-label{display:flex;justify-content:space-between;font-size:11px;color:var(--t3);margin-top:5px}
+
+.tile{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;
+  border-radius:10px;border:.5px solid var(--line);padding:10px 12px;min-width:92px;min-height:66px;gap:4px}
+.tile .f{font-size:12px;color:var(--t1);font-weight:600}
+.tile .d{font-size:11.5px;font-weight:600}
+.tile .s{font-size:10.5px;color:var(--t3)}
+.tile.up .d{color:var(--warn)}
+.tile.down .d{color:var(--ok)}
+.tile.flat .d{color:var(--t3)}
+.tile.missing{opacity:.45}
+.tile.sep{border-width:2px;border-color:var(--t1)}
+.tile-row{display:flex;gap:8px;flex-wrap:wrap}
+
+.stage-ladder{display:flex;gap:8px;flex-wrap:wrap}
+.stage-node{flex:1;min-width:140px;border-radius:10px;padding:12px 14px;border:.5px solid var(--line)}
+.stage-node.best{border-left:3px solid var(--ok);background:#F0F7E6}
+.stage-node.worst{border-left:3px solid var(--warn);background:var(--warn-l)}
+.stage-node .nm{font-size:13px;font-weight:600}
+.stage-node .rk{font-size:11px;color:var(--t3)}
+
+.dir-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:8px;
+  border:.5px solid var(--line);background:var(--card);font-size:12.5px}
+.dir-chip .arrow{font-size:15px;font-weight:700}
+.dir-chip.late .arrow{color:var(--warn)}
+.dir-chip.early .arrow{color:var(--ok)}
+
+.flow-step{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 10px;
+  border-radius:10px;border:.5px solid var(--line);background:var(--card);min-width:120px;flex:1}
+.flow-step .t{font-size:13px;font-weight:600;color:var(--t1)}
+.flow-step .d{font-size:11.5px;color:var(--t3);text-align:center;line-height:1.4}
+.flow-arrow{display:flex;align-items:center;color:var(--t3);font-size:16px;padding:0 2px}
+
+.morning{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.morning .panel{background:var(--card);border:.5px solid var(--line);border-radius:12px;padding:16px 18px;min-width:0}
+.morning .panel h4{color:var(--t3);font-size:12px;font-weight:600;letter-spacing:.03em;margin-bottom:8px}
+.morning .metric{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:.5px solid var(--line);font-size:13px}
+.morning .metric:last-child{border-bottom:0}
+.morning .metric .mv{font-weight:600;font-size:15px}
+.morning .rec{font-size:14px;line-height:1.6}
+
+.vtable td:first-child{font-weight:600;color:var(--t1);width:110px}
+.level-row{display:flex;gap:8px;align-items:center;margin:6px 0;flex-wrap:wrap}
+.level-node{flex:1;min-width:130px;border-radius:9px;padding:9px 12px;border:.5px solid var(--line);
+  background:var(--card);font-size:12px}
+.level-node .l{font-weight:600;font-size:11px;color:var(--t3)}
+.level-node .n{font-size:12.5px;font-weight:600}
+.level-arr{color:var(--t3)}
+
+/* ===== 桥接卡 / 桥接卡专用 ===== */
+.bridge{background:var(--card);border:.5px solid var(--line2);border-radius:12px;padding:18px 20px;margin:20px 0}
+.bridge .bt{font-size:12px;color:var(--t3);letter-spacing:.03em;margin-bottom:8px;font-weight:600}
+.bridge .bm{font-size:14.5px;color:var(--t1);line-height:1.6}
+.bridge .bm b{color:var(--t1)}
+.bridge .bs{font-size:12.5px;color:var(--t3);margin-top:6px}
+
+/* 证据链箭头垂直流 */
+.evchain{display:flex;flex-direction:column;gap:0;margin:8px 0}
+.evchain .step{padding:10px 16px;background:var(--card);border:.5px solid var(--line);border-radius:10px;font-size:13.5px}
+.evchain .step b{color:var(--t1)}
+.evchain .step .sub{font-size:12px;color:var(--t3);display:block;margin-top:2px}
+.evchain .arrow{align-self:center;color:var(--t3);font-size:14px;padding:2px 0}
+
+/* 三层问题卡 */
+.q3{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.q3 .q{background:var(--card);border:.5px solid var(--line);border-radius:12px;padding:16px 18px;border-top:3px solid var(--t1)}
+.q3 .q .qn{font-size:11px;color:var(--t3);letter-spacing:.03em;font-weight:600}
+.q3 .q .qt{font-size:15px;font-weight:600;margin:6px 0 4px}
+.q3 .q .qd{font-size:12.5px;color:var(--t2)}
+
+/* 能力架构三层 */
+.arch{display:flex;flex-direction:column;gap:10px;margin:8px 0}
+.arch .layer{background:var(--card);border:.5px solid var(--line);border-radius:12px;padding:14px 18px}
+.arch .layer .lt{font-size:11px;color:var(--t3);letter-spacing:.03em;font-weight:600}
+.arch .layer .ln{font-size:14px;font-weight:600;margin:4px 0}
+.arch .layer .ld{font-size:12.5px;color:var(--t2)}
+.arch .layer.top{background:#F7F5EF;border-color:var(--line2)}
+.arch .layer.top .ln{color:var(--v5)}
+.arch .arrow{align-self:center;color:var(--t3);font-size:14px}
+
+/* Score ≠ Confidence ≠ Recommendation */
+.snr3{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin:10px 0}
+.snr3 .c{background:var(--card);border:.5px solid var(--line);border-radius:12px;padding:14px 16px}
+.snr3 .c .ct{font-size:14px;font-weight:600}
+.snr3 .c .cq{font-size:12px;color:var(--t3);margin:4px 0 6px}
+.snr3 .c .cd{font-size:12.5px;color:var(--t2)}
+
+@media (max-width:1100px){
+  .wrap,.hd{max-width:100%}
+  .g2{grid-template-columns:1fr}
+}
+@media (max-width:900px){
+  .g2,.g3{grid-template-columns:1fr}
+  .wrap{padding-left:16px;padding-right:16px}
+  .hero{padding:22px 20px}
+  .hero h2{font-size:21px}
+  nav button{padding:8px 11px 10px;font-size:12.5px}
+  .morning{grid-template-columns:1fr}
+}
+@media (max-width:700px){
+  h2{font-size:18px}
+  .hero h2{font-size:19px}
+  .kpi{grid-template-columns:1fr 1fr}
+  .flow-step{min-width:100%}
+  .flow-arrow{transform:rotate(90deg)}
+}
+
+/* Review revision: responsive reading, accessible navigation and print. */
+:root{--t3:#696860;--line:#deddd5}
+html{scroll-padding-top:150px}
+.wrap,.hd{max-width:1180px}
+.wrap{padding-bottom:60px}
+.hd{padding-bottom:0}
+h1{font-size:clamp(18px,2.5vw,24px);line-height:1.4}
+h2{font-size:clamp(19px,2.3vw,24px)}
+p,.ins,.lead{line-height:1.85}
+p,.cap,.ins{overflow-wrap:anywhere}
+.card>p{max-width:76ch}
+.reading-note{max-width:850px;font-size:13px;margin:12px 0 24px}
+.source-note{font-size:12px;margin-top:10px}
+.evidence-key{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0 8px}
+.summary-path{margin-top:18px}
+.grid,.q,.c,.panel,.hz>*,.step-grid>*{min-width:0}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.step-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:12px;margin:12px 0;padding:0;list-style:none;counter-reset:step}
+.step-grid>li{counter-increment:step;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+.step-grid>li::before{content:counter(step,decimal-leading-zero);display:block;font-size:11px;font-weight:600;color:var(--t3);margin-bottom:5px}
+.step-grid .t{font-weight:600}.step-grid .d{font-size:12px;color:var(--t2);margin-top:6px}
+.device-row{display:grid;grid-template-columns:140px minmax(0,1fr);gap:12px;margin:14px 0;align-items:start}
+.device-name{font-weight:600;font-size:13px}
+.stage-ladder{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.stage-node{min-width:0;padding:10px}
+.tile-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tile{min-width:0;align-items:flex-start}.tile.up .d{color:var(--apple)}.tile.down .d{color:var(--warn)}
+.tile .s{font-size:11px}.tile.missing{opacity:1;background:#f1f0eb}
+.finding-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.finding-grid .card h4{margin-bottom:8px}
+.finding-grid .card p+p{margin-top:8px}
+table{table-layout:auto;font-size:13px}
+th,td{white-space:normal;overflow-wrap:anywhere;line-height:1.65;padding:10px 12px}
+th{white-space:normal}td.n{white-space:normal}
+.tblwrap{max-width:100%;overscroll-behavior-x:contain}
+.tblwrap table{min-width:540px}
+.next-link{display:inline-block;margin-top:12px;font-weight:600}
+a{color:#185FA5;text-underline-offset:3px}
+button:focus-visible,a:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:3px solid #185FA5;outline-offset:4px}
+nav{padding-bottom:2px}nav button{min-height:44px}
+.btn{min-height:40px}
+.scenario-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.scenario-tabs button[aria-pressed=true]{background:#e6f1fb;border-color:#185fa5;color:#185fa5}
+.morning{grid-template-columns:repeat(3,minmax(0,1fr))}
+.morning .panel{padding:16px}.morning .rec{font-size:14px}
+.notice{padding:12px 16px;background:#f4ede0;border-radius:8px;font-size:13px;margin-bottom:14px}
+.coord-wrap{padding:16px 18px;border:1px solid var(--line);border-radius:10px;background:#fbfcfe;margin-bottom:12px}.coord-title{font-weight:700;margin-bottom:12px}.coord-axis{display:flex;justify-content:space-between;margin-left:190px;color:var(--t3);font-size:11px}.coord-row{display:grid;grid-template-columns:180px 1fr 78px;gap:10px;align-items:center;margin-top:10px;font-size:12px}.coord-track{height:12px;border-radius:8px;background:repeating-linear-gradient(to right,#e7edf3 0,#e7edf3 1px,transparent 1px,transparent 25%);position:relative}.coord-track i{position:absolute;top:1px;width:10px;height:10px;border-radius:50%;background:#185FA5}.coord-track.range i{height:8px;top:2px;border-radius:5px;background:#8bb8dc}.coord-row em{font-style:normal;color:var(--t2)}.coord-note{margin-top:12px;color:var(--t3);font-size:12px;line-height:1.6}
+@media(max-width:900px){.g2,.g3,.finding-grid,.morning{grid-template-columns:1fr}.hd{padding:12px 16px 0}.hero{padding:20px}.kpi{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){header{position:static}.wrap{padding-left:14px;padding-right:14px}.device-row{grid-template-columns:1fr}.stage-ladder{grid-template-columns:repeat(2,minmax(0,1fr))}.tile-row{grid-template-columns:1fr}.q3,.snr3,.kpi{grid-template-columns:1fr}.hero{margin-top:14px;padding:18px}.step-grid{grid-template-columns:1fr}.card{padding:16px}section.on{padding-top:18px}.tblwrap{padding:0}.ins{margin-bottom:20px}h2{margin-top:26px}html{scroll-padding-top:16px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*{animation:none!important;transition:none!important}}
+@media print{header{position:static}nav,.tools,.next-link,.scenario-tabs{display:none!important}section,section.on{display:block!important;padding-top:18px}.wrap,.hd{max-width:none;padding:0}.hero,.card,.ins,.bridge,.panel{break-inside:avoid;box-shadow:none}h2,h3,h4{break-after:avoid}.tblwrap{overflow:visible}.tblwrap table{min-width:0}.g2,.g3,.morning,.finding-grid{grid-template-columns:1fr}body{background:white;font-size:11pt}footer{font-size:9pt}}
+</style>
+</head>
+<body><noscript><style>section{display:block!important}</style><p class="notice">JavaScript 未开启。正文可阅读，交互图表与情境切换需开启 JavaScript。</p></noscript>
+<header>
+<div class="hd">
+<div class="hd-top">
+<div>
+<h1>从睡眠分期到个体健康决策</h1>
+<p class="sub">可穿戴睡眠监测的算法边界、竞品洞察与产品定义</p>
+</div>
+<div class="tools">
+<button class="btn" id="btnDecl">口径与数据声明</button>
+</div>
+</div>
+<nav id="nav"></nav>
+</div>
+</header>
+<div class="wrap">
+<details id="decl" style="margin-top:20px">
+<summary>口径与数据声明（引用任何结论前请先读这一节）</summary>
+<div class="body"><ol>
+<li><b>研究口径：</b>竞品评测采用逐 30 秒 epoch 四分类，与 PSG 标注对齐；主口径为全窗口与 Wake 补齐。跨研究比较前需核对标签、窗口、队列与统计方法。</li>
+<li><b>统计方法：</b>由受试者混淆矩阵聚合计算 pooled Cohen’s κ，以受试者为单位 bootstrap。单组区间是否重叠不能替代组间差值的置信区间或检验。</li>
+<li><b>证据来源：</b>公开研究支持一般机制与研究方法；本项目的设备表现来自实验观察，两者分别标注。页面保留定性观察，未嵌入逐受试者记录或原始混淆矩阵。</li>
+<li><b>披露状态：</b>本文件为本地优化审阅稿。页面仅呈现可解释的聚合结果与方法边界。</li>
+<li><b>设备标识：</b>Oura v4 / v5 沿用数据集编号；现有材料对其公开产品代际的映射不一致，暂不据此做代际优劣比较。</li>
+<li><b>信号质量：</b>SNR、周期性、饱和及脱腕指标来自自研设备，不是竞品的信号质量，也不是脱离设备的纯生理属性。</li>
+<li><b>用户与产品：</b>生理分层刻画受试者特征，不能直接证明其需求、动机或使用感受。第 03–05 章中用户问题、产品规则与验证计划均为待验证假设。</li></ol></div>
+</details>
+<section class="on" id="home">
+<div class="hero">
+<p class="eyebrow">研究作品集 · 算法证据与产品假设</p>
+<h2>当可穿戴设备从「记录健康」走向「辅助健康决策」，什么信息值得被相信？</h2>
+<p class="oneline">从睡眠算法这个底层能力出发，重新思考：哪些睡眠信息可靠、哪些需要降级表达、如何进一步转化为运动与生活行动。</p>
+<div class="flowline" id="flowline"></div>
+</div>
+<div class="kpi" style="margin-top:16px">
+<div class="k"><div class="lb">核心发现 ①</div><div class="vl sm">总体指标之外，仍需人群分层</div><div class="nt">AHI / BMI / 性别是候选变量，影响大小尚需验证</div></div>
+<div class="k"><div class="lb">核心发现 ②</div><div class="vl sm">分层方向未在设备间一致复现</div><div class="nt">队列、设备与算法差异尚不能分离</div></div>
+<div class="k"><div class="lb">核心发现 ③</div><div class="vl sm">阶段指标与错误流向分开读</div><div class="nt">浅睡指标较弱；深睡错误主要流向浅睡</div></div>
+<div class="k"><div class="lb">产品机会</div><div class="vl sm">个体健康决策</div><div class="nt">Score → Explain → Action</div></div>
+</div>
+<div class="summary-path" id="summaryPath"></div>
+<div aria-label="证据类型" class="evidence-key"><span class="pill apple">公开资料</span><span class="pill v4">实验观察</span><span class="pill amb">待验证产品假设</span></div><p class="reading-note">研究工作：竞品与 PSG 对齐评测、受试者生理特征交叉分析及技术调研。产品部分为上述研究的延伸；</p></section>
+<section id="s1">
+<h2>01　为什么现在值得做：行业正在从「记录」走向「理解」</h2>
+<p class="lead">公开产品已在睡眠记录之外提供评分、恢复和节律解释。由此提出本研究的问题：当测量结果进入日常判断时，产品应如何表达它的可信程度？</p>
+<div class="card">
+<h4>一句话判断</h4>
+<p>以 Oura 为例，Sleep Score、Readiness 与 Body Clock 分别组织睡眠、恢复和作息信息。这提供了产品能力的公开参照；<b>是否解决了特定用户的问题，仍需要使用研究验证。</b></p>
+</div>
+<h3>1.1 竞品产品能力的公开证据</h3>
+<div class="grid g2" id="ouraEvidence"></div>
+<h3>1.2 从记录到行动：产品能力分析框架</h3>
+<div class="evolution" id="evolution"></div>
+<div class="bridge">
+<div class="bt">问题转换</div>
+<div class="bm">公开产品的能力扩展引出三个待验证的问题：<b>测量结果是否可信 → 用户如何理解 → 是否有助于下一步行动。</b>先验证测量边界，再讨论表达方式。</div>
+<div class="bs">因此本研究不再只问「竞品测得准不准」，而进一步追问：当睡眠数据进入健康决策时，哪些信息足够可靠、哪些需要降级表达、哪些还缺少个体化解释。</div>
+</div>
+</section>
+<section id="s2">
+<h2>02　技术边界：什么信息值得被产品化？</h2>
+<p class="lead">通过 PSG 对照与人群分层，描述本样本中的性能差异。观察用于提出后续实验和产品表达假设，不用于证明设备差异的因果机制。</p>
+<h3>2.1 文献参照：哪些结果可以比较？</h3>
+<div class="chart">
+<div class="cap"><b>图 2-1</b>　按研究条件阅读公开结果，避免将跨研究数值排成统一性能轴</div>
+<div class="htmlbox" id="chartTheory"></div>
+</div>
+<div class="ins"><span class="tag">研究判断</span>公开文献中的较高结果不是已被证明的物理上限。信号来源、采样条件、人群、标签粒度及评估窗口都影响可比性；实验竞品结果也不能仅凭数值所在区间被判为“达到行业上限”。</div>
+<h3>2.2 两种读法：阶段一致性与错误流向</h3>
+<div class="chart">
+<div class="cap"><b>图 2-2 · 实验观察</b>　按逐类 one-vs-rest κ 排序；仅表示本样本内的阶段位次</div>
+<div class="htmlbox" id="stageLadder"></div>
+</div>
+<div class="ins"><span class="tag">口径解释</span><b>按逐类 κ，浅睡较弱；按深睡错误的去向，浅睡是主要混淆对象。</b>两者分母与问题不同，不能合并成“深睡是唯一最弱阶段”。错误流向提示深浅边界值得研究，但并未证明不可突破的生理上限。</div>
+<h3>2.3 人群差异：哪些人在什么情况下测不准</h3>
+<div class="chart">
+<div class="cap"><b>图 2-3 · 实验观察</b>　候选因素的描述性方向与区间状态，不作为显著性检验</div>
+<div class="htmlbox" id="attrTiles"></div>
+</div>
+<div class="ins"><span class="tag">研究判断</span>生理特征<b>可能与算法表现相关</b>，值得进入分层评测。当前部分方向未在不同设备队列中一致复现，性别差异较小，高 BMI 等分层还存在样本不足。尚不能确定各因素的独立贡献，也不能由方向相反反推出算法校准策略。</div>
+<div class="chart">
+<div class="cap"><b>图 2-4 · 实验观察</b>　AHI 分层分析摘要；完整梯度需回溯原始统计表核对</div>
+<div class="htmlbox" id="ahiStrip"></div>
+</div>
+<div class="ins"><span class="tag">下一步</span>对方向差异先做队列可比性检查：受试者是否配对、各档覆盖是否充分、其他生理变量是否失衡。再估计组间 κ 差值及其区间，必要时做交互分析。当前观察支持<b>继续验证人群鲁棒性</b>，尚不能证明某设备已经解决这一问题。</div>
+<h3>2.4 两层证据：竞品表现画像 vs 自研设备信号质量画像</h3>
+<div class="grid g2">
+<div class="card" style="border-left:2.5px solid #185FA5">
+<h4 style="color:#185FA5">A｜竞品算法表现画像</h4>
+<p style="margin-top:6px">回答「<b>什么样的人，竞品算法更容易出现性能下降？</b>」——用 PSG 生理画像（AHI / BMI / 性别 / 年龄）交叉竞品 staging 表现，得到的是<b>定性方向</b>（如高 BMI、高 AHI 档精度更低），并观察其在不同设备上是否复现。</p>
+</div>
+<div class="card" style="border-left:2.5px solid #BA7517">
+<h4 style="color:#BA7517">B｜自研设备信号质量画像（已有探索报告）</h4>
+<p style="margin-top:6px">已有受试者—手级信号质量与生理特征交叉报告。它回答“在自研设备与当前质控口径下，哪些分层值得进一步关注”，不能解释 Apple / Oura 的原始信号质量。已有指标包括：</p>
+<ul style="margin:8px 0 0;padding-left:18px;font-size:13px;color:var(--t2)"><li><b>PPG 质量：</b>SNR、饱和、周期性分别描述不同信号特征。</li><li><b>佩戴与有效性：</b>脱腕、PPI 覆盖和可用样本率分别报告。</li><li><b>待复核：</b>历史报告与当前配置的 epoch 时长不同；双手记录需按受试者处理相关性。</li></ul>
+</div>
+</div>
+<h3>2.5 形态差异：机制假设，而非研究结论</h3>
+<div class="card" style="border-left:2.5px solid #BA7517">
+<h4>为什么同一生理变量，在不同设备上可能表现出不同的精度梯度？</h4>
+<p style="margin-top:8px">当前分析观察到设备队列间的分层差异，尚不能区分样本构成、测量条件与算法因素。下面是待验证的机制框架，箭头表示研究假设：</p>
+<div class="evchain" style="margin-top:12px">
+<div class="step"><b>① 生理因素</b><span class="sub">AHI / BMI / 性别 / 年龄 —— 本研究已观察到的分层变量</span></div>
+<div class="arrow">↓</div>
+<div class="step"><b>② 测量链</b><span class="sub">佩戴位置 → 组织/血流 → 光学信号 → 信号质量</span></div>
+<div class="arrow">↓</div>
+<div class="step"><b>③ 算法链</b><span class="sub">预处理 → 特征/表征 → 个体化校准 → staging model</span></div>
+<div class="arrow">↓</div>
+<div class="step" style="border-left:3px solid #185FA5"><b>④ 最终表现</b><span class="sub">PSG agreement / staging performance</span></div>
+</div>
+<p style="margin-top:12px">候选解释包括测量链、算法链及<b>样本构成差异</b>。下一轮可优先设计同受试者配对实验，在记录佩戴条件与数据完整度的基础上，比较各设备的人群分层表现。</p>
+<h4 style="margin-top:18px;color:#BA7517">公开硬件资料：说明测量链可优化，不直接归因实验观察到的精度差异</h4><p>Oura 的 Ring 5 官方技术文章描述了光学路径、LED 位置和传感器接触设计的调整，并列出 12 条优化信号通路。这是厂商对硬件设计的说明，不能证明本样本中睡眠分期差异主要来自硬件，也不能排除算法变化。</p><p class="source-note"><a href="https://ouraring.com/blog/zh_CN/inside-the-ring-oura-ring-5/" rel="noopener noreferrer" target="_blank">[R4] Oura 官方技术说明</a> · 本文设备编号与公开代际的对应关系仍待确认。</p></div>
+<div class="card" style="margin-top:14px;border-left:2.5px solid #BA7517"><h4>图 2-5 · Oura Ring 4 / 5 官方硬件对比</h4><p>官方资料用于说明传感器与光学路径的产品设计变化；它是硬件信息参照，不直接证明某一代的睡眠分期精度差异。</p><div aria-label="Oura Ring 4 与 Ring 5 官方硬件对比" class="tblwrap" role="region" tabindex="0"><table><thead><tr><th scope="col">维度</th><th scope="col">Oura Ring 4</th><th scope="col">Oura Ring 5</th><th scope="col">来源性质</th></tr></thead><tbody><tr><td>传感器路径</td><td>上一代光学与信号通路设计</td><td>官方说明为多路径光学方案</td><td>厂商技术说明</td></tr><tr><td>测量接触</td><td>戒指内侧固定位置接触手指</td><td>对传感器布局与接触设计进行优化</td><td>厂商技术说明</td></tr><tr><td>可用信息</td><td>PPG、温度、运动等多模态信号</td><td>在光学路径与信号覆盖上继续优化</td><td>公开硬件资料</td></tr><tr><td>对本研究的意义</td><td colspan="2">可作为“形态—测量链—信号质量”机制假设的参照，不能单独归因竞品分期结果。</td><td>研究解释</td></tr></tbody></table></div><p class="source-note"><a href="https://ouraring.com/blog/zh_CN/inside-the-ring-oura-ring-5/" rel="noopener noreferrer" target="_blank">[R4] Oura Ring 5 官方技术说明</a></p></div><div class="card" style="margin-top:12px;border-left:2.5px solid #BA7517"><h4>官方指标对比（Oura Ring 4 → 5）</h4><div aria-label="Oura 官方指标对比" class="tblwrap" role="region" tabindex="0"><table><thead><tr><th scope="col">维度</th><th scope="col">Ring 4</th><th scope="col">Ring 5</th><th scope="col">来源性质</th></tr></thead><tbody><tr><td>PPG 通路</td><td>6 通路</td><td><b>18 通路（Smart Sensing 2.0）</b></td><td>官方规格</td></tr><tr><td>LED 与波长</td><td>4 绿光 LED</td><td><b>10 LED（6 绿 + 2 红 + 2 红外）</b></td><td>官方规格</td></tr><tr><td>肤色覆盖</td><td>深肤色精度下降</td><td><b>覆盖全部 Fitzpatrick 肤质</b></td><td>官方口径</td></tr><tr><td>血氧信号质量</td><td>基准</td><td><b>+120%</b></td><td>官方外部研究</td></tr><tr><td>夜间心率数据缺口</td><td>基准</td><td><b>−31%</b></td><td>官方外部研究</td></tr><tr><td>呼吸紊乱指数（BDI）</td><td>基准</td><td><b>+15%</b></td><td>官方外部研究</td></tr><tr><td>续航</td><td>7 天</td><td><b>8 天</b></td><td>官方规格</td></tr></tbody></table></div><p class="source-note">以上性能数字未经本研究独立验证，来源为 <a href="https://ouraring.com/blog/zh_CN/inside-the-ring-oura-ring-5/" rel="noopener noreferrer" target="_blank">Oura 官方 Ring 5 技术解析</a>。</p></div><div class="bridge"><div class="bt">从评测到使用</div><div class="bm">人群差异提示测量结果需要表达边界；它是否造成使用困惑，要作为下一章的用户问题假设继续验证。</div><a class="next-link" href="#s3">继续阅读 →</a></div></section>
+<section id="s3">
+<h2>03　从人群分析到用户问题假设</h2>
+<p class="lead">本章从竞品表现与受试者生理信息的交叉分析出发，推导可能的使用问题。<b></b>需要补上“测量差异是否造成理解或行动困难”的验证。</p>
+<div class="grid g2" style="margin:14px 0">
+<div class="card" style="border-left:2.5px solid #185FA5"><h4>已有证据｜人群分层</h4><p>AHI、BMI、性别等与竞品表现的交叉分析，能够识别应继续检验的覆盖问题，不能直接揭示用户动机或需求优先级。</p></div>
+<div class="card" style="border-left:2.5px solid #BA7517"><h4>已有材料｜自研设备质控</h4><p>信号质量交叉报告提供独立的测量链线索。还需统一时长、聚合与相关性口径，再决定其产品表达；不与竞品表现合并成因果链。</p></div>
+</div>
+<div class="q3">
+<div class="q"><div class="qn">Q1 · Measurement</div><div class="qt">我昨晚到底睡得怎么样？</div><div class="qd">对应 Sleep Quality：数量 + 规律 + 连续 + 恢复。</div></div>
+<div class="q"><div class="qn">Q2 · Understanding</div><div class="qt">为什么今天状态和昨天不一样？</div><div class="qd">对应个人基线 + 昼夜节律 + 恢复状态。</div></div>
+<div class="q"><div class="qn">Q3 · Action</div><div class="qt">那我今天应该怎么安排？</div><div class="qd">对应运动 / 生活建议。</div></div>
+</div>
+<h3>3.1 从算法发现到产品机会</h3>
+<div id="algoToUser"></div>
+<div class="ins"><span class="tag">产品推导</span>分析先决定“哪些信息需要谨慎表达”，用户研究再决定“这种表达是否有用”。下一章保留睡眠、恢复、节律与运动建议的能力范围，逐项标注尚待验证的假设。</div>
+<div class="bridge"><div class="bt">从问题假设到产品定义</div><div class="bm">将三个候选问题组织为测量、理解与行动三层能力，同时把“证据不足时如何表达”纳入规则。</div><a class="next-link" href="#s4">继续阅读 →</a></div></section>
+<section id="s4">
+<h2>04　产品定义：从睡眠算法到个体健康认知</h2>
+<p class="lead">产品假设：将测量结果组织成可理解的状态说明，并辅助日常安排。保留睡眠、恢复、节律与运动建议的能力范围；晨间作为演示触点，所有规则均待验证。</p>
+<div class="hero hero-compact">
+<p class="eyebrow">产品概念</p>
+<h2>把睡眠、恢复、活动负荷与生理信号，组织成「个体化解释 → 今日状态 → 行动」的决策层。</h2>
+</div>
+<h3>4.1 产品能力架构：测量、理解与行动</h3>
+<div class="arch">
+<div class="layer top"><div class="lt">顶层 · Action</div><div class="ln">训练建议 / 活动负荷 / 作息调整</div><div class="ld">把状态理解转化为「今天怎么做」，并回到下一晚形成反馈。</div></div>
+<div class="arrow">↑</div>
+<div class="layer"><div class="lt">中层 · Understanding</div><div class="ln">睡眠质量 / 恢复状态 / 节律画像 / 个人基线 / 可信度</div><div class="ld">把原始测量翻译成「这意味着什么」，并显式给出置信度。</div></div>
+<div class="arrow">↑</div>
+<div class="layer"><div class="lt">底层 · Measurement</div><div class="ln">睡眠分期 / 入睡出睡边界 / HR / HRV / 信号质量</div><div class="ld">可验证的底层算法能力，是整条链的证据入口。</div></div>
+</div>
+<h3>4.2 一个关键产品原则：Score ≠ Confidence ≠ Recommendation</h3>
+<div class="snr3">
+<div class="c"><div class="ct">Sleep Score</div><div class="cq">回答「昨晚怎么样？」</div><div class="cd">候选维度为数量、规律、连续与恢复。个体基线修正及权重尚未验证，也需检查恢复信息与其他模块的重复计算。</div></div>
+<div class="c"><div class="ct">Confidence</div><div class="cq">回答「这个判断我有多确定？」</div><div class="cd">独立显示数据完整度、信号质量与经校准的模型不确定性。当前为设计原则，尚未形成经过验证的置信度分数。</div></div>
+<div class="c"><div class="ct">Recommendation</div><div class="cq">回答「基于这个状态，今天可以怎么做？」</div><div class="cd">结合个人基线、昨日负荷与主观感受提出可选行动。数据不足时先说明缺口，不自动给出训练强度结论。</div></div>
+</div>
+<div class="ins"><span class="tag">表达规则</span>状态分数、证据是否充分和行动选项分别呈现。低可信度不等于低睡眠质量；缺失数据也不应自动让用户被判为“恢复差”。</div>
+<h3>4.3 睡眠质量模型</h3>
+<div class="grid g2" id="sleepModel"></div>
+<h3>4.4 昼夜节律：不是贴标签，是算「节律匹配度」</h3>
+<div class="card">
+<h4>Circadian Alignment</h4>
+<p>Oura 的 Body Clock 为节律解释提供公开产品参照。这里提出的假设是：结合长期记录与生活约束，帮助用户理解作息偏移。短期作息规律不直接等同于内源性生理节律。<a href="https://support.ouraring.com/hc/en-us/articles/14594974129555-Body-Clock-and-Chronotype" rel="noopener noreferrer" target="_blank">[R3]</a></p>
+<div id="circadian"></div>
+</div>
+<h3>4.5 晨间洞察：作为「高频触点」演示 Score → Explain → Action</h3>
+<div id="morningCard"></div>
+<div class="ins"><span class="tag">验证重点</span>检查用户是否能区分“状态可能变化”和“数据不足”，以及示例解释是否产生不必要的确定感。运动建议需要额外验证，不能由单夜睡眠分数直接推导。</div>
+<h3>4.6 风险洞察：从「诊断」到「异常趋势提醒」</h3>
+<div class="card">
+<h4>异常恢复信号（而非「风险诊断」）</h4>
+<p>本产品概念仅探索相对个人基线的变化提示，不提供诊断。异常阈值、误报控制与提示频次尚待验证；AHI 在本研究中用作评测分层变量，不作为给用户贴标签的依据。</p>
+</div>
+<h3>4.7 产品闭环</h3>
+<div id="loop"></div>
+<div class="bridge"><div class="bt">从概念到验证</div><div class="bm">保留完整能力范围，通过分阶段任务验证可理解性与实际价值，不将界面示例当作效果证据。</div><a class="next-link" href="#s5">继续阅读 →</a></div></section>
+<section id="s5">
+<h2>05　从产品假设到验证闭环</h2>
+<p class="lead">以下为计划，不是已完成的验证。保持原有 V1–V4 能力范围，为每一步补齐验证任务、观察指标与继续迭代的条件。</p>
+<div id="roadmapV"></div>
+<h3>5.1 能力演进：Level 1 → 6</h3>
+<div id="levels"></div>
+<div class="ins"><span class="tag">迭代条件</span>先验证用户能否理解解释与不确定性，再评估节律、运动和异常趋势模块的增量价值。前一阶段证据不足时，优先修正假设，而非继续叠加能力。</div>
+<div class="bridge"><div class="bt">从价值验证到技术选择</div><div class="bm">确认值得解决的问题之后，再以性能、资源和维护成本选择支撑它的技术路线。</div><a class="next-link" href="#s6">继续阅读 →</a></div></section>
+<section id="s6"><h2>06　路线判断：从技术证据到设备方案</h2>
+<p class="lead">路线不是“特征工程或端到端”的抽象站队，而是结合睡眠场景、设备资源与证据强度，分别为戒指和手环选择可验证的实现路径。</p>
+<div class="card" style="border-left:2.5px solid #534AB7"><h4>前置判断：睡眠信号的机会与约束</h4><p>睡眠大多处于相对静息状态，PPG 中的心搏、呼吸调制和 PPI/HRV 变化具有稳定的生理线索；同时，翻身、佩戴变化和运动伪影仍会造成信号污染。运动伪影与有效生理频段可能重叠，不能只靠滤波解决，因此需要 PPG 表征、ACC 辅助和信号质量控制共同处理。</p></div>
+<div class="finding-grid" style="margin-top:12px"><div class="card"><span class="pill">戒指候选路线</span><h4>特征工程 + 轻量时序模型</h4><p>在更严格的功耗、内存和通信预算下，优先保留 HRV、呼吸耦合、体动等可检查的生理特征，再用轻量模型完成时序整合。特征提取成本和跨个体鲁棒性仍需单独测量。</p></div><div class="card"><span class="pill apple">手环候选路线</span><h4>端侧编码 + 手机 APP 时序建模</h4><p>端侧每 30 秒从 PPG/ACC 原始波形提取 256 维表示（PPG 128 维 + ACC 128 维，约 0.19M 参数）；手机 APP 完成位置编码、双向 Cross-Attention、TCN、Bi-LSTM 与分类。</p></div></div>
+<div class="card" style="margin-top:12px"><h4>自己的算法迭代：研究依据 → 实验 → 路线判断</h4><div aria-label="算法路线迭代表" class="tblwrap" role="region" tabindex="0"><table><thead><tr><th scope="col">节点</th><th scope="col">依据与假设</th><th scope="col">实现与观察</th><th scope="col">判断</th></tr></thead><tbody><tr><td>Seq2Seq</td><td>参考 SeqSleepNet 的序列到序列监督思想</td><td>从中心帧监督扩展为逐帧监督；历史记录含 QWK 同期改动，增益需按同口径日志拆分</td><td>让时序层对过渡状态负责，继续保留序列监督</td></tr><tr><td>中心帧评估</td><td>部署时每个 epoch 由一个窗口作为中心输出</td><td>监控 center_kappa 与 vote_kappa；vote 平均同一窗口不同位置的预测，可能引入非中心帧噪声</td><td>center 用于选模，vote 用作过度平滑监控</td></tr><tr><td>PaPaGei → PPG 时频</td><td>预训练表征不一定适配下游睡眠分期；2023 文献支持 STFT 保留时间频率结构</td><td>经过频段/结构消融，逐步加入 PPG 时域、STFT、自相关、ACC 及跨模态融合</td><td>用任务相关表征替代不可控的通用编码器</td></tr><tr><td>时序建模</td><td>WatchSleepPPG 的 TCN 经验、SleepPPG-Net 的 PPG 时域信息</td><td>在 Bi-LSTM 前加入膨胀卷积，形成 TCN + Bi-LSTM</td><td>扩大局部感受野，再建模跨 epoch 上下文</td></tr><tr><td>CPC 特征</td><td>借鉴心肺耦合研究，将心搏与呼吸代理关系显式化</td><td>参与 PPI/CPC 特征实现；具体 κ 增益按版本与对照实验核对</td><td>作为戒指特征路线的生理先验候选</td></tr></tbody></table></div></div>
+<div class="ins"><span class="tag">路线结论</span>当前证据支持将戒指与手环作为两条资源约束不同的候选路线：戒指优先验证可解释特征的边际价值，手环优先验证端侧表示与 APP 时序模型的精度—资源折中。两条路线都需要固定数据划分、标签、窗口、评价口径和实际设备预算后再做最终决策。</div></section>
+<section id="s7">
+<h2>附录　方法论、证据来源与数据披露</h2>
+<div class="grid g3">
+<div class="card"><h4>一、报告口径必须完整</h4><p style="margin-top:6px">报告信号来源、人群、标签、窗口与指标。区分公开研究、实验观察和产品假设，避免把不同条件下的数值直接比较。</p></div>
+<div class="card"><h4>二、不确定性要显式呈现</h4><p style="margin-top:6px">置信区间、方向矛盾都应出现在主图里，而不是藏在附录。<b>只有在知道「哪里样本不够」之后，判断才成立。</b></p></div>
+<div class="card"><h4>三、算法验证需纳入公平性维度</h4><p style="margin-top:6px">把「人群梯度」本身作为一项评测指标，而不只看总精度。总精度相同、人群梯度不同的两个算法，对用户的实际价值并不相同。</p></div>
+</div>
+<h3>附录 A｜研究与公开资料来源</h3>
+<div class="grid g3" id="refs"></div>
+<h3>附录 B｜方法与数据披露边界</h3>
+<div class="card"><h4>公开证据与实验观察分别追溯</h4><p>公开来源支持一般机制与产品能力；实验分析支持本样本中的探索性观察。两者相互参照，但不能相互替代。</p><p style="margin-top:8px">页面仅呈现聚合后的实验观察与公开资料，未嵌入逐受试者记录。</p></div>
+</section>
+<footer>数据口径：逐 30 秒 epoch 四分类 Cohen's Kappa，与 PSG 金标准对齐　｜　统计方法：epoch 级 pooled Kappa + 受试者级 bootstrap 95% CI　｜　本页呈现定性结论、公开文献区间与聚合结果　｜　产品概念（04 / 05）为方法与产品假设</footer>
+</div>
+<script>window.__DATA__={"meta": {"generated": "2026-09-28", "status": "review_copy", "evidence": "Aggregate experiment observations; methods and conditions are shown with the results."}, "theory": [{"tier": "① 天花板", "label": "临床级干净 PPG", "lo": 0.74, "hi": 0.78, "note": "SleepPPG-Net（IEEE JBHI 2023）· 256Hz 实验室 · 患者躺着做 PSG"}, {"tier": "② 平均水平", "label": "系统综述汇总", "lo": 0.52, "hi": 0.58, "note": "npj Digital Medicine 2024 综述 · 35 篇文献 / 62 个穿戴设置 · 混合口径"}, {"tier": "③ 地板", "label": "真实上市产品实测", "lo": 0.21, "hi": 0.53, "note": "Sleep Advances 2025 六款商业腕戴 · 62 例第三方 PSG 验证"}], "zones": {"defs": [{"id": "z1", "name": "低于行业平均带", "note": "含公开报道的真实产品区间（κ 0.21–0.53）"}, {"id": "z2", "name": "行业平均带内", "note": "公开系统综述汇总区间（κ 0.52–0.58）"}, {"id": "z3", "name": "平均带与天花板之间", "note": "高于综述、未及临床级文献区间"}, {"id": "z4", "name": "达到/接近天花板", "note": "接近临床级干净信号文献区间（κ 0.74–0.78）"}], "global": [{"dev": "Apple", "zone": "z3", "n_cat": "大样本"}, {"dev": "Oura_v4", "zone": "z2", "n_cat": "大样本"}, {"dev": "Oura_v5", "zone": "z3", "n_cat": "中样本"}]}, "stages": {"Apple": {"order": ["REM", "Wake", "Deep", "Light"], "strongest": "REM", "weakest": "Light", "strongest_vs_weakest": "sep"}, "Oura_v4": {"order": ["REM", "Wake", "Deep", "Light"], "strongest": "REM", "weakest": "Light", "strongest_vs_weakest": "sep"}, "Oura_v5": {"order": ["REM", "Wake", "Deep", "Light"], "strongest": "REM", "weakest": "Light", "strongest_vs_weakest": "sep"}}, "attr_tiles": {"Apple": [{"factor": "BMI≥28", "dir": "down", "sig": "overlap", "n_base": "基准", "n_cmp": "高风险"}, {"factor": "AHI≥15", "dir": "down", "sig": "overlap", "n_base": "基准", "n_cmp": "高风险"}, {"factor": "性别", "dir": "flat", "sig": "overlap", "n_base": "F", "n_cmp": "M"}], "Oura_v4": [{"factor": "BMI≥28", "dir": "up", "sig": "insufficient", "n_base": "基准", "n_cmp": "高风险"}, {"factor": "AHI≥15", "dir": "up", "sig": "overlap", "n_base": "基准", "n_cmp": "高风险"}, {"factor": "性别", "dir": "flat", "sig": "overlap", "n_base": "F", "n_cmp": "M"}], "Oura_v5": [{"factor": "BMI≥28", "dir": "flat", "sig": "insufficient", "n_base": "基准", "n_cmp": "高风险"}, {"factor": "AHI≥15", "dir": "flat", "sig": "insufficient", "n_base": "基准", "n_cmp": "高风险"}, {"factor": "性别", "dir": "flat", "sig": "insufficient", "n_base": "F", "n_cmp": "M"}]}, "ahi_trend": {"Apple": [{"bin": "<5", "step": null, "n_cat": "基准"}, {"bin": "5–15", "step": "flat", "n_cat": "—"}, {"bin": "15–30", "step": "down", "n_cat": "—"}, {"bin": "≥30", "step": "down", "n_cat": "—"}], "Oura_v4": [{"bin": "<5", "step": null, "n_cat": "基准"}, {"bin": "5–15", "step": "flat", "n_cat": "—"}, {"bin": "15–30", "step": "up", "n_cat": "—"}, {"bin": "≥30", "step": "up", "n_cat": "—"}], "Oura_v5": [{"bin": "<5", "step": null, "n_cat": "基准"}, {"bin": "5–15", "step": "flat", "n_cat": "—"}, {"bin": "15–30", "step": "flat", "n_cat": "—"}, {"bin": "≥30", "step": "flat", "n_cat": "—"}]}};</script>
+<script>(function () {
+  'use strict';
+  var D = window.__DATA__;
+  var LB = { Apple: 'Apple Watch', Oura_v4: 'Oura Ring 4', Oura_v5: 'Oura Ring 5' };
+  var DEV = ['Apple', 'Oura_v4', 'Oura_v5'];
+  var COLOR = { Apple: '#185FA5', Oura_v4: '#534AB7', Oura_v5: '#BA7517' };
+  var STCN = { Wake: '清醒', Light: '浅睡', Deep: '深睡', REM: '快速眼动' };
+
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+  function dirText(d) { return d === 'up' ? '↑ 更高' : (d === 'down' ? '↓ 更低' : '≈ 持平'); }
+  function dirCls(d) { return d === 'up' ? 'up' : (d === 'down' ? 'down' : 'flat'); }
+  function sigText(s) {
+    if(s==='sep') return '区间分离；非差值检验';
+    if(s==='insufficient') return '覆盖不足，暂不判断';
+    return '区间重叠；差值待检验';
+  }
+
+
+  function stepsHTML(items) {
+    return '<ol class="step-grid">'+items.map(function(it){return '<li><div class="t">'+it[0]+'</div><div class="d">'+(it[1]||'')+'</div></li>';}).join('')+'</ol>';
+  }
+
+  // ================= 首页 · 主叙事 =================
+  function renderFlowline() {
+    $('flowline').innerHTML=stepsHTML([['行业与竞品','公开能力提供研究背景'],['技术与人群','评测揭示需验证的边界'],['用户问题假设','从差异推导使用问题'],['产品与验证','表达规则、能力范围与验证计划']]);
+  }
+
+  function renderSummaryPath() {
+    $('summaryPath').innerHTML='<div class="bridge"><div class="bt">核心研究问题</div><div class="bm">当睡眠算法在不同人群上的表现不一致，产品应如何表达结果，并进一步支持个体化理解？</div><div class="bs">已有：竞品评测与生理交叉分析。待验证：用户是否需要这些解释，以及解释能否帮助行动。</div><a class="next-link" href="#s1">从行业与竞品开始 →</a></div>';
+  }
+
+  // ================= 01 竞品公开证据 =================
+  function renderOuraEvidence() {
+    var cards=[['Sleep Score','以多个睡眠相关因素组织单夜睡眠信息。','https://support.ouraring.com/hc/en-us/articles/360025445574-Sleep-Score','R1'],['Readiness','将睡眠、活动与恢复相关指标组织为状态参照。','https://support.ouraring.com/hc/en-us/articles/360025589793-Readiness-Score','R2'],['Body Clock / Chronotype','提供长期节律与作息匹配的产品参照。','https://support.ouraring.com/hc/en-us/articles/14594974129555-Body-Clock-and-Chronotype','R3']];
+    $('ouraEvidence').innerHTML=cards.map(function(c){return '<div class="card"><span class="pill apple">公开产品能力</span><h4 style="margin-top:10px">'+c[0]+'</h4><p>'+c[1]+'</p><p class="source-note"><a href="'+c[2]+'" target="_blank" rel="noopener noreferrer">['+c[3]+'] 官方说明</a></p></div>';}).join('');
+  }
+
+  function renderEvolution() {
+    $('evolution').innerHTML=stepsHTML([['记录','时长与阶段'],['解释','评分与长期趋势'],['连接','睡眠、节律与恢复'],['行动','候选建议与反馈']])+'<p class="source-note">作者的能力分析框架，不代表所有厂商统一经历的行业阶段。</p>';
+  }
+
+  // ================= 02 精度坐标系 =================
+  function renderTheory() {
+    var tiers = D.theory;
+    var zoneColors = { z1: '#C9A65A', z2: '#8C8A84', z3: '#534AB7', z4: '#185FA5' };
+    var zoneNames = { z1: '低于行业平均带', z2: '行业平均带内', z3: '平均带与天花板之间', z4: '达到/接近天花板' };
+    // 三条公开文献区间的分界（κ 0.20 起）
+    // 地板 0.21–0.53 / 平均带 0.52–0.58 / 天花板 0.74–0.78，中间是空隙
+    var html = '<div style="display:flex;flex-direction:column;gap:12px">';
+    html += '<div style="font-size:11px;color:var(--t3)">横轴为公开文献的 κ 区间（0.20 – 0.80）。下方色块表示「天花板→地板」三段公开精度带；彩色圆点为各设备实测的相对档位（仅档位，不显示绝对精度）。</div>';
+
+    // 颜色区块轴（天花板→地板三段，作为背景带）
+    var segs = [
+      { label: '地板 0.21–0.53', lo: 0.21, hi: 0.53, color: zoneColors.z1 },
+      { label: '行业平均带 0.52–0.58', lo: 0.52, hi: 0.58, color: zoneColors.z2 },
+      { label: '天花板 0.74–0.78', lo: 0.74, hi: 0.78, color: zoneColors.z4 }
+    ];
+    html += '<div style="display:flex;gap:10px;align-items:center">' +
+      '<div style="width:150px;font-size:12px;color:var(--t1);flex-shrink:0">公开精度带</div>' +
+      '<div style="flex:1;position:relative;height:26px;border-radius:6px;background:var(--line)">';
+    segs.forEach(function (s) {
+      var lo = ((s.lo - 0.20) / 0.60 * 100).toFixed(1);
+      var hi = ((s.hi - 0.20) / 0.60 * 100).toFixed(1);
+      html += '<div style="position:absolute;left:' + lo + '%;width:' + (hi - lo) + '%;top:2px;bottom:2px;background:' + s.color + ';opacity:.85;border-radius:3px" title="' + s.label + '"></div>';
+    });
+    html += '<div style="position:absolute;left:0;right:0;top:0;height:0;pointer-events:none"></div>';
+    html += '</div><div style="width:150px;flex-shrink:0"></div></div>';
+
+    // 三段图例
+    html += '<div style="display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--t2)">' +
+      segs.map(function (s) { return '<span style="display:inline-flex;align-items:center;gap:5px"><span style="width:11px;height:11px;border-radius:3px;background:' + s.color + ';display:inline-block"></span>' + s.label + '</span>'; }).join('') +
+      '</div>';
+
+    // 各设备实测落点（圆点）
+    html += '<div style="margin-top:4px">';
+    var centers = { z1: 0.36, z2: 0.55, z3: 0.66, z4: 0.76 };
+    D.zones.global.forEach(function (g) {
+      var z = g.zone;
+      var c = (centers[z] - 0.20) / 0.60 * 100;
+      html += '<div style="display:flex;gap:10px;align-items:center;margin-top:8px">' +
+        '<div style="width:150px;font-size:12px;color:' + COLOR[g.dev] + ';flex-shrink:0;font-weight:600">' + LB[g.dev] + '<br><span style="color:var(--t3);font-size:10.5px;font-weight:400">' + g.n_cat + '</span></div>' +
+        '<div style="flex:1;position:relative;height:16px">' +
+        '<div style="position:absolute;left:' + c + '%;top:0;transform:translateX(-50%);width:14px;height:14px;border-radius:50%;background:' + zoneColors[z] + ';border:2px solid #fff;box-shadow:0 0 0 1px var(--line2)"></div>' +
+        '</div>' +
+        '<div style="width:150px;font-size:11px;color:' + zoneColors[z] + ';flex-shrink:0">' + zoneNames[z] + '</div></div>';
+    });
+    html += '</div>';
+
+    html += '<div style="display:flex;gap:10px;margin-top:6px"><div style="width:150px;flex-shrink:0"></div>' +
+      '<div style="flex:1;display:flex;justify-content:space-between;font-size:10.5px;color:var(--t3)"><span>κ 0.20</span><span>0.40</span><span>0.60</span><span>0.80</span></div>' +
+      '<div style="width:150px;flex-shrink:0"></div></div>';
+
+    html += '</div>';
+    $('chartTheory').innerHTML = html;
+  }
+
+  // ================= 02 阶段强弱 ladder =================
+  function renderStageLadder() {
+    $('stageLadder').innerHTML=DEV.map(function(d){return '<div class="device-row"><div class="device-name" style="color:'+COLOR[d]+'">'+LB[d]+'</div><div class="stage-ladder">'+D.stages[d].order.map(function(s,i){return '<div class="stage-node '+(i===0?'best':i===3?'worst':'')+'"><div class="nm">'+STCN[s]+'</div><div class="rk">逐类 κ 第 '+(i+1)+' 位</div></div>';}).join('')+'</div></div>';}).join('')+'<p class="source-note">描述性排序不等于各阶段差异均显著；不能外推为其他设备、队列或版本的固定排序。</p>';
+  }
+
+  // ================= 02 人群 tiles =================
+  function renderAttrTiles() {
+    $('attrTiles').innerHTML=DEV.map(function(d){return '<div class="device-row"><div class="device-name" style="color:'+COLOR[d]+'">'+LB[d]+'</div><div class="tile-row">'+D.attr_tiles[d].map(function(t){var insufficient=t.sig==='insufficient';return '<div class="tile '+(insufficient?'missing':dirCls(t.dir))+'"><div class="f">'+esc(t.factor)+'</div><div class="d">'+(insufficient?'暂不判断':dirText(t.dir))+'</div><div class="s">'+sigText(t.sig)+'</div></div>';}).join('')+'</div></div>';}).join('')+'<p class="source-note">箭头表示原分析摘要中的描述性方向；“≈”表示原摘要未呈现清晰方向，不是等效性检验。样本不足时不绘制方向。组间差异需估计 Δκ 及其区间；公开统计方法说明见 <a href="https://doi.org/10.1007/s10654-016-0149-3" target="_blank" rel="noopener noreferrer">[R6]</a>。</p>';
+  }
+
+  // ================= 02 AHI 走向 strip =================
+  function renderAhiStrip() {
+    $('ahiStrip').innerHTML='<div class="finding-grid"><div class="card"><h4>Apple Watch</h4><p>较高 AHI 档表现较低，提示生理分层值得纳入鲁棒性评测。</p></div><div class="card"><h4>Oura Ring 4</h4><p>观察到相反方向，提示设备形态、测量链与算法策略需要联合分析。</p></div><div class="card"><h4>Oura Ring 5</h4><p>分层覆盖有限，暂不判断梯度。</p></div></div><p class="source-note">箭头表示实验观察中的描述性方向，需结合样本覆盖和区间进一步判断。</p>';
+  }
+
+  // ================= 03 算法发现 → 产品机会 =================
+  function renderAlgoToUser() {
+    var rows=[['阶段混淆','深浅混淆值得继续研究','用户可能把单夜阶段分钟数当精确真值','解释阶段估计的局限，并验证趋势呈现是否更易理解'],['分层差异','AHI、BMI、性别等生理因素可能共同影响精度','不同人群可能获得不同可信程度的结果','按生理组合分层评测，并在结果中呈现适用边界'],['信号缺失','自研设备已有质量指标','用户可能把数据不足误读为睡眠差','将缺失原因与状态判断分开显示'],['节律与恢复','长期睡眠、白天活动和 HR/HRV 变化可形成状态线索','用户希望知道今天的状态和安排依据','结合个人基线与近期 HR/HRV 趋势，输出可解释的状态提示']];
+    $('algoToUser').innerHTML='<div class="tblwrap" tabindex="0" role="region" aria-label="证据到产品假设对照表，可横向滚动"><table><thead><tr><th>主题</th><th>证据或线索</th><th>用户问题假设</th><th>候选产品响应</th></tr></thead><tbody>'+rows.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+c+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table></div>';
+  }
+
+  // ================= 04 睡眠模型 =================
+  function renderSleepModel() {
+    var cards = [
+      ['① 数量 Sleep Quantity', '睡够没有？', '睡眠时长'],
+      ['② 规律 Sleep Regularity', '最近作息稳定吗？', '过去 7 天入睡/起床时间波动'],
+      ['③ 连续 Sleep Continuity', '睡着以后稳定吗？', '夜间觉醒次数 / 睡眠中断 / 睡眠效率'],
+      ['④ 恢复 Recovery', '真正恢复到自己了吗？', '睡眠心率 / HRV / 体温 / 呼吸 / 近期趋势']
+    ];
+    $('sleepModel').innerHTML = cards.map(function (c) {
+      return '<div class="card"><h4>' + c[0] + '</h4><p style="margin-top:6px"><b>' + c[1] + '</b></p><p style="margin-top:4px;font-size:12px">' + c[2] + '</p></div>';
+    }).join('');
+  }
+
+  function renderCircadian() {
+    $('circadian').innerHTML=stepsHTML([['长期数据','睡眠、活动及生活约束'],['作息参照','观察工作日与休息日差异'],['匹配解释','呈现偏移和不确定性']])+'<p class="source-note">概念方案：先描述记录到的作息，再验证是否足以推断节律；缺少足够历史数据时不生成类型标签。</p>';
+  }
+
+  function renderMorningCard() {
+    $('morningCard').innerHTML='<div class="notice">交互示例 · 以下三种状态均为虚构情境，不是实测结果或已验证的建议规则。</div><div class="scenario-tabs" aria-label="切换示意情境"><button class="btn" data-scenario="0" aria-pressed="true">记录较完整</button><button class="btn" data-scenario="1" aria-pressed="false">数据不足</button><button class="btn" data-scenario="2" aria-pressed="false">感受与记录不一致</button></div><div class="morning" id="scenarioOutput" aria-live="polite"></div>';
+    var cases=[['睡眠记录较完整；已有近期基线','部分恢复相关指标偏离近期基线。原因尚不能确定。','先确认今日感受与活动计划，再查看可选安排。此示例不输出训练处方。'],['昨夜存在较长缺失，可信程度有限','暂无法形成完整状态判断；这不等于睡眠质量差。','查看缺失说明、检查佩戴记录，保留主观感受；暂不生成个体化运动建议。'],['设备记录与主观感受不一致','保留两种信息，暂不由分数覆盖个人体验。','记录影响当天状态的其他因素，观察多日变化，并反馈这次不一致。']];
+    function select(i){$('scenarioOutput').innerHTML=cases[i].map(function(t,k){return '<div class="panel"><h4>'+['证据与可信程度','状态解释','下一步选项'][k]+'</h4><div class="rec">'+t+'</div></div>';}).join('');document.querySelectorAll('[data-scenario]').forEach(function(b){b.setAttribute('aria-pressed',String(Number(b.dataset.scenario)===i));});}
+    document.querySelectorAll('[data-scenario]').forEach(function(b){b.addEventListener('click',function(){select(Number(b.dataset.scenario));});});select(0);
+  }
+
+  function renderLoop() {
+    $('loop').innerHTML=stepsHTML([['采集','睡眠与活动记录'],['解释','基线、状态与可信程度'],['选择','用户查看并选择行动'],['反馈','记录感受与使用结果'],['迭代','检验解释是否有价值']])+'<p class="source-note">闭环是产品设计假设；行为采纳或下一晚变化本身不能证明建议产生了改善。</p>';
+  }
+
+  // ================= 05 验证 =================
+  function renderRoadmapV() {
+    var rows=[['V1 · 解释','睡眠质量与可信程度','以完整、缺失、冲突三种记录比较纯分数页与解释页','观察用户能否区分状态变化、数据不足与模型不确定性；若产生确定性误读，先改解释'],['V2 · 节律','长期作息与匹配','使用长期睡眠、活动、HR/HRV 记录测试作息与恢复解释','检查能否区分记录到的作息、个人基线变化与节律推断；无增量价值则重审'],['V3 · 运动','睡眠与白天状态到运动安排','以睡眠、白天 HR/HRV 相对个人基线和活动负荷生成不同强度的建议原型','观察建议是否能说明依据、适用条件和不确定性；不把采纳率当作健康有效性证明'],['V4 · 提醒','异常趋势提示','用不同持续时间和缺失比例的模拟趋势测试提醒','观察误读、焦虑与打扰；提示无益时调整触发条件或暂缓']];
+    $('roadmapV').innerHTML='<div class="tblwrap" tabindex="0" role="region" aria-label="验证计划，可横向滚动"><table><thead><tr><th>阶段</th><th>保留范围</th><th>拟开展的验证</th><th>观察指标与决策条件</th></tr></thead><tbody>'+rows.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+c+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table></div><p class="source-note">尚未执行。正式验证前明确目标人群、样本与基线，并预先约定成功及停止条件；本页不虚构通过阈值或实验成效。</p>';
+  }
+
+  function renderLevels() {
+    $('levels').innerHTML=stepsHTML([['测量','独立验证'],['解释','理解与误读'],['长期趋势','稳定性与生活约束'],['状态','相对个人基线'],['建议','可执行性与反馈'],['闭环','长期价值验证']]);
+  }
+
+  // ================= 附录 A 参考文献 =================
+  function renderRefs() {
+    var rows=[['R1','Oura · Sleep Score','https://support.ouraring.com/hc/en-us/articles/360025445574-Sleep-Score','公开产品能力；不验证本方案评分'],['R2','Oura · Readiness Score','https://support.ouraring.com/hc/en-us/articles/360025589793-Readiness-Score','公开状态指标；不验证本方案运动建议'],['R3','Oura · Body Clock and Chronotype','https://support.ouraring.com/hc/en-us/articles/14594974129555-Body-Clock-and-Chronotype','节律产品参照'],['R4','Oura · Ring 5 技术解析','https://ouraring.com/blog/zh_CN/inside-the-ring-oura-ring-5/','厂商硬件说明；不归因实验精度差异'],['R5','Schyvens 等，2025 · 六款腕戴设备 PSG 验证','https://doi.org/10.1093/sleepadvances/zpaf021','特定实验室队列的公开结果；不是行业下限'],['R6','Greenland 等，2016 · Statistical tests, P values, confidence intervals, and power','https://doi.org/10.1007/s10654-016-0149-3','统计解释：不以区间重叠代替差值检验']];
+    $('refs').innerHTML=rows.map(function(r){return '<div class="card" id="ref-'+r[0]+'"><h4><a href="'+r[2]+'" target="_blank" rel="noopener noreferrer">['+r[0]+'] '+r[1]+'</a></h4><p>'+r[3]+'</p></div>';}).join('');
+  }
+
+  // ================= 导航 =================
+  var TABS = [
+    { id: 'home', name: '首页' },
+    { id: 's1', name: '01 行业变化' },
+    { id: 's2', name: '02 技术边界' },
+    { id: 's3', name: '03 问题假设' },
+    { id: 's4', name: '04 产品定义' },
+    { id: 's5', name: '05 验证闭环' },
+    { id: 's6', name: '06 路线判断' },
+    { id: 's7', name: '附录' }
+  ];
+
+  function show(id, syncHash) {
+    if(!TABS.some(function(t){return t.id===id;})) id='home';
+    TABS.forEach(function(t){var s=$(t.id);if(s)s.classList.toggle('on',t.id===id);});
+    document.querySelectorAll('nav button').forEach(function(b){var active=b.dataset.id===id;b.classList.toggle('on',active);b.setAttribute('aria-current',active?'page':'false');});
+    if(syncHash!==false && window.location.hash!=='#'+id)window.history.replaceState(null,'','#'+id);
+    window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  }
+
+  function initNav() {
+    $('nav').setAttribute('aria-label','作品集章节');
+    $('nav').innerHTML=TABS.map(function(t){return '<button type="button" data-id="'+t.id+'" aria-controls="'+t.id+'">'+t.name+'</button>';}).join('');
+    document.querySelectorAll('nav button').forEach(function(b){b.addEventListener('click',function(){show(b.dataset.id);});});
+    document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var id=a.getAttribute('href').slice(1);if(TABS.some(function(t){return t.id===id;})){e.preventDefault();show(id);}});});
+    window.addEventListener('hashchange',function(){show(window.location.hash.slice(1),false);});
+    show(window.location.hash.slice(1)||'home',false);
+  }
+
+  function boot() {
+    if (!D) {
+      document.body.insertAdjacentHTML('afterbegin', '<div style="padding:20px;color:#A32D2D">数据未加载（window.__DATA__ 缺失）。</div>');
+      return;
+    }
+    renderFlowline();
+    renderSummaryPath();
+    renderOuraEvidence();
+    renderEvolution();
+    renderTheory();
+    renderStageLadder();
+    renderAttrTiles();
+    renderAhiStrip();
+    renderAlgoToUser();
+    renderSleepModel();
+    renderCircadian();
+    renderMorningCard();
+    renderLoop();
+    renderRoadmapV();
+    renderLevels();
+    renderRefs();
+    initNav();
+    $('btnDecl').addEventListener('click', function () {
+      var d = $('decl'); d.open = !d.open;
+      d.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
+</script>
+</body>
+</html>
