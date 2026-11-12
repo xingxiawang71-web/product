@@ -1,4 +1,4 @@
-html
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8"/>
@@ -274,6 +274,20 @@ nav{padding-bottom:2px}nav button{min-height:44px}
 @media(max-width:600px){header{position:static}.wrap{padding-left:14px;padding-right:14px}.device-row{grid-template-columns:1fr}.stage-ladder{grid-template-columns:repeat(2,minmax(0,1fr))}.tile-row{grid-template-columns:1fr}.q3,.snr3,.kpi{grid-template-columns:1fr}.hero{margin-top:14px;padding:18px}.step-grid{grid-template-columns:1fr}.card{padding:16px}section.on{padding-top:18px}.tblwrap{padding:0}.ins{margin-bottom:20px}h2{margin-top:26px}html{scroll-padding-top:16px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*{animation:none!important;transition:none!important}}
 @media print{header{position:static}nav,.tools,.next-link,.scenario-tabs{display:none!important}section,section.on{display:block!important;padding-top:18px}.wrap,.hd{max-width:none;padding:0}.hero,.card,.ins,.bridge,.panel{break-inside:avoid;box-shadow:none}h2,h3,h4{break-after:avoid}.tblwrap{overflow:visible}.tblwrap table{min-width:0}.g2,.g3,.morning,.finding-grid{grid-template-columns:1fr}body{background:white;font-size:11pt}footer{font-size:9pt}}
+
+/* 2026-11-11: demand-to-definition decision card */
+.demand-decision,.first-version{margin:20px 0;border-top:3px solid var(--v4)}
+.decision-kicker{font-size:11px!important;color:var(--v4);letter-spacing:.06em;margin-bottom:6px}
+.demand-decision h3,.first-version h3{margin:0 0 10px;font-size:18px;line-height:1.5}
+.decision-list{margin:16px 0 0}
+.decision-list>div{display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;padding:12px 0;border-top:1px solid var(--line)}
+.decision-list dt{font-size:12px;font-weight:600;color:var(--t1)}
+.decision-list dd{margin:0;font-size:13px;color:var(--t2)}
+.first-version .grid>.card{background:var(--bg);padding:12px 14px}
+.first-version a,.demand-decision a{color:var(--apple)}
+.requirement-link{display:inline-block;margin:8px 0;font-size:13px;color:var(--v4)}
+@media(max-width:600px){.decision-list>div{grid-template-columns:1fr;gap:3px}.first-version .g3{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body><noscript><style>section{display:block!important}</style><p class="notice">JavaScript 未开启。正文可阅读，交互图表与情境切换需开启 JavaScript。</p></noscript>
@@ -403,16 +417,64 @@ nav{padding-bottom:2px}nav button{min-height:44px}
 </div>
 <h3>3.1 从算法发现到产品机会</h3>
 <div id="algoToUser"></div>
+
+<article class="card demand-decision" id="demandDecision" aria-labelledby="demandDecisionTitle">
+  <p class="decision-kicker">本轮需求取舍 · 待验证</p>
+  <h3 id="demandDecisionTitle">先帮助用户读懂一份不完整的睡眠记录</h3>
+  <p>行业和竞品已经将睡眠记录组织为状态分数与解释。首版沿着这条路径，优先验证记录缺失时的理解任务。晨起查看报告是本轮切入场景，后续再评估其他健康决策触点。</p>
+  <dl class="decision-list">
+    <div><dt>候选用户</dt><dd>日常佩戴手表或戒指、主动查看睡眠报告，并希望据此理解当天状态的成年人。</dd></div>
+    <div><dt>具体场景</dt><dd>晨起打开报告，发现某段记录缺失，难以判断应怎样理解当晚结果。</dd></div>
+    <div><dt>当前可能的应对</dt><dd>反复查看分数与阶段图，回想昨晚感受，或凭经验猜测是否佩戴松动。以上是待访谈核实的行为假设。</dd></div>
+    <div><dt>待验证的困难</dt><dd>用户可能把记录不足理解为睡得差，也可能因此完全放弃参考仍有信息的记录。需要先验证这种困惑是否真实发生、是否值得优先解决。</dd></div>
+    <div><dt>首版承接任务</dt><dd>说明记录完整性、可支持的判断和待补充信息，让用户选择查看缺口或补充感受。</dd></div>
+  </dl>
+  <p class="source-note">需求由技术观察与公开产品能力推导。本项目尚未开展用户访谈，当前人群与任务优先级均待验证。</p>
+</article>
+<h3>3.2 为什么先验证这一个任务</h3>
+<div class="tblwrap" role="region" tabindex="0" aria-label="从证据到首版需求的推导">
+  <table>
+    <thead><tr><th>推导环节</th><th>当前材料</th><th>对首版的影响</th></tr></thead>
+    <tbody>
+      <tr><td>行业与竞品</td><td>Oura 的 Sleep Score 与 Readiness 展示了从测量到状态解释的产品路径。<a href="https://support.ouraring.com/hc/en-us/articles/360025445574-Sleep-Score" target="_blank" rel="noopener noreferrer">[R1]</a> <a href="https://support.ouraring.com/hc/en-us/articles/360025589793-Readiness-Score" target="_blank" rel="noopener noreferrer">[R2]</a></td><td>以用户能理解记录为前提，再讨论状态与行动。</td></tr>
+      <tr><td>本人的研究线索</td><td>竞品分层评测提示结果存在适用条件，自研设备质控提供缺失与信号质量线索。两类材料分别使用。</td><td>先验证可观测的数据缺口怎样呈现，降低对尚待校准的综合置信度分数的依赖。</td></tr>
+      <tr><td>用户问题假设</td><td>不完整记录可能影响用户对睡眠状态的理解。尚待访谈与任务观察。</td><td>围绕“这份记录能支持什么判断”设计任务。</td></tr>
+      <tr><td>产品取舍</td><td>记录解释可以直接连接现有测量证据。训练建议、节律解释和异常提醒还需要各自的额外依据。</td><td>先做记录解释卡，再评估后续能力的增量价值。</td></tr>
+    </tbody>
+  </table>
+</div>
+
 <div class="ins"><span class="tag">产品推导</span>分析先决定“哪些信息需要谨慎表达”，用户研究再决定“这种表达是否有用”。下一章保留睡眠、恢复、节律与运动建议的能力范围，逐项标注尚待验证的假设。</div>
-<div class="bridge"><div class="bt">从问题假设到产品定义</div><div class="bm">将三个候选问题组织为测量、理解与行动三层能力，同时把“证据不足时如何表达”纳入规则。</div><a class="next-link" href="#s4">继续阅读 →</a></div></section>
+<div class="bridge"><div class="bt">从问题假设到产品定义</div><div class="bm">先用记录不完整的场景验证解释任务，再把首版范围、表达规则与后置条件写进产品定义。</div><a class="next-link" href="#s4">继续阅读 →</a></div></section>
 <section id="s4">
 <h2>04　产品定义：从睡眠算法到个体健康认知</h2>
-<p class="lead">产品假设：将测量结果组织成可理解的状态说明，并辅助日常安排。保留睡眠、恢复、节律与运动建议的能力范围；晨间作为演示触点，所有规则均待验证。</p>
+<p class="lead">面向个体健康认知，首版先验证日常佩戴者在记录不完整时的理解任务。下方明确解释卡的范围，后续逐步检验节律、恢复与行动能力。</p>
 <div class="hero hero-compact">
 <p class="eyebrow">产品概念</p>
 <h2>把睡眠、恢复、活动负荷与生理信号，组织成「个体化解释 → 今日状态 → 行动」的决策层。</h2>
 </div>
-<h3>4.1 产品能力架构：测量、理解与行动</h3>
+
+<article class="card first-version" id="firstVersion" aria-labelledby="firstVersionTitle">
+  <p class="decision-kicker">首版定义 · 原型假设</p>
+  <h3 id="firstVersionTitle">一张可以说明依据的睡眠记录解释卡</h3>
+  <p>让用户回答三个问题——记录是否完整、当前能读出什么、还需要补充什么。先让每项解释找到数据依据，再验证它是否帮助用户完成理解任务。</p>
+  <div class="grid g3" style="margin-top:14px">
+    <div class="card"><h4>记录完整性</h4><p>展示已知的记录时段与缺失区间。原因未确认时保留待核实状态。</p></div>
+    <div class="card"><h4>可支持的判断</h4><p>说明当前记录能够呈现哪些观察，哪些全夜结论还需要更多数据。</p></div>
+    <div class="card"><h4>待补充的信息</h4><p>提供查看缺口、检查佩戴与补充主观感受的路径。</p></div>
+  </div>
+  <div class="tblwrap" role="region" tabindex="0" aria-label="首版范围与后置能力" style="margin-top:14px">
+    <table><thead><tr><th>能力</th><th>本轮范围</th><th>取舍依据</th></tr></thead><tbody>
+      <tr><td>记录完整性与解释</td><td>首版优先验证</td><td>与当前质控线索直接相连，可设计明确的理解任务。</td></tr>
+      <tr><td>长期节律与个人状态</td><td>后续候选</td><td>需要足够历史记录、个人参照和生活约束信息。</td></tr>
+      <tr><td>个体化训练强度建议</td><td>后续候选</td><td>需要活动计划、运动能力和建议效果的独立验证。</td></tr>
+      <tr><td>异常趋势提醒</td><td>后续候选</td><td>需要验证持续性、误报与提醒负担。</td></tr>
+    </tbody></table>
+  </div>
+  <p class="source-note">下方保留能力演进框架。首版优先级可在访谈与任务观察后调整。</p>
+</article>
+
+<h3>4.1 后续能力框架与首版位置</h3>
 <div class="arch">
 <div class="layer top"><div class="lt">顶层 · Action</div><div class="ln">训练建议 / 活动负荷 / 作息调整</div><div class="ld">把状态理解转化为「今天怎么做」，并回到下一晚形成反馈。</div></div>
 <div class="arrow">↑</div>
@@ -435,7 +497,7 @@ nav{padding-bottom:2px}nav button{min-height:44px}
 <p>Oura 的 Body Clock 为节律解释提供公开产品参照。这里提出的假设是：结合长期记录与生活约束，帮助用户理解作息偏移。短期作息规律不直接等同于内源性生理节律。<a href="https://support.ouraring.com/hc/en-us/articles/14594974129555-Body-Clock-and-Chronotype" rel="noopener noreferrer" target="_blank">[R3]</a></p>
 <div id="circadian"></div>
 </div>
-<h3>4.5 晨间洞察：作为「高频触点」演示 Score → Explain → Action</h3>
+<h3>4.5 首版解释卡与边界情境演示</h3>
 <div id="morningCard"></div>
 <div class="ins"><span class="tag">验证重点</span>检查用户是否能区分“状态可能变化”和“数据不足”，以及示例解释是否产生不必要的确定感。运动建议需要额外验证，不能由单夜睡眠分数直接推导。</div>
 <h3>4.6 风险洞察：从「诊断」到「异常趋势提醒」</h3>
@@ -445,7 +507,7 @@ nav{padding-bottom:2px}nav button{min-height:44px}
 </div>
 <h3>4.7 产品闭环</h3>
 <div id="loop"></div>
-<div class="bridge"><div class="bt">从概念到验证</div><div class="bm">保留完整能力范围，通过分阶段任务验证可理解性与实际价值，不将界面示例当作效果证据。</div><a class="next-link" href="#s5">继续阅读 →</a></div></section>
+<div class="bridge"><div class="bt">从概念到验证</div><div class="bm">先检验首版解释卡能否帮助用户理解记录，再决定是否推进长期状态与行动能力。</div><a class="next-link" href="#s5">继续阅读 →</a></div></section>
 <section id="s5">
 <h2>05　从产品假设到验证闭环</h2>
 <p class="lead">以下为计划，不是已完成的验证。保持原有 V1–V4 能力范围，为每一步补齐验证任务、观察指标与继续迭代的条件。</p>
@@ -612,10 +674,56 @@ nav{padding-bottom:2px}nav button{min-height:44px}
   }
 
   function renderMorningCard() {
-    $('morningCard').innerHTML='<div class="notice">交互示例 · 以下三种状态均为虚构情境，不是实测结果或已验证的建议规则。</div><div class="scenario-tabs" aria-label="切换示意情境"><button class="btn" data-scenario="0" aria-pressed="true">记录较完整</button><button class="btn" data-scenario="1" aria-pressed="false">数据不足</button><button class="btn" data-scenario="2" aria-pressed="false">感受与记录不一致</button></div><div class="morning" id="scenarioOutput" aria-live="polite"></div>';
-    var cases=[['睡眠记录较完整；已有近期基线','部分恢复相关指标偏离近期基线。原因尚不能确定。','先确认今日感受与活动计划，再查看可选安排。此示例不输出训练处方。'],['昨夜存在较长缺失，可信程度有限','暂无法形成完整状态判断；这不等于睡眠质量差。','查看缺失说明、检查佩戴记录，保留主观感受；暂不生成个体化运动建议。'],['设备记录与主观感受不一致','保留两种信息，暂不由分数覆盖个人体验。','记录影响当天状态的其他因素，观察多日变化，并反馈这次不一致。']];
-    function select(i){$('scenarioOutput').innerHTML=cases[i].map(function(t,k){return '<div class="panel"><h4>'+['证据与可信程度','状态解释','下一步选项'][k]+'</h4><div class="rec">'+t+'</div></div>';}).join('');document.querySelectorAll('[data-scenario]').forEach(function(b){b.setAttribute('aria-pressed',String(Number(b.dataset.scenario)===i));});}
-    document.querySelectorAll('[data-scenario]').forEach(function(b){b.addEventListener('click',function(){select(Number(b.dataset.scenario));});});select(0);
+    $('morningCard').innerHTML = '<div class="notice">交互原型 · 虚构记录。默认展示本轮优先验证的数据不足场景。</div>' +
+      '<div class="scenario-tabs" aria-label="切换示意情境">' +
+      '<button type="button" class="btn" data-scenario="0" aria-pressed="false">记录较完整</button>' +
+      '<button type="button" class="btn" data-scenario="1" aria-pressed="true">数据不足 · 本轮重点</button>' +
+      '<button type="button" class="btn" data-scenario="2" aria-pressed="false">感受与记录不一致</button></div>' +
+      '<div class="morning" id="scenarioOutput" aria-live="polite"></div>' +
+      '<p class="source-note" id="scenarioRule"></p>';
+
+    var cases = [
+      {
+        panels: [
+          '昨夜记录较完整。记录覆盖与模型不确定性分别展示。',
+          '可以查看本次记录的时长、阶段估计和近期变化。当天状态仍需结合本人感受。',
+          '查看记录详情，或补充醒来后的感受。'
+        ],
+        rule: '候选规则 A · 记录较完整时呈现可追溯的观察，恢复与训练建议继续按各自验证条件处理。'
+      },
+      {
+        panels: [
+          '示例中 02:10—03:00 缺少有效记录，原因待核实。',
+          '当前记录不足以支持完整的全夜判断。当前先呈现已知的缺失时段，其他片段的解释仅覆盖已有记录。',
+          '先查看缺失时段与佩戴记录，再补充昨晚是否醒来、摘下设备及晨起感受。'
+        ],
+        rule: '候选规则 B · 缺失时先呈现记录缺口，暂停生成全夜恢复结论和个体化训练强度建议。缺失本身不用于推断睡眠好坏。'
+      },
+      {
+        panels: [
+          '示例中设备记录与用户自述感受不一致，保留两种信息。',
+          '一次不一致尚不足以确定原因，需要结合记录质量及多日变化检查。',
+          '补充影响当天感受的因素，并保留这次不一致供后续回看。'
+        ],
+        rule: '候选规则 C · 允许并列记录设备观察与本人感受，继续验证解释是否便于理解。'
+      }
+    ];
+
+    function select(i) {
+      $('scenarioOutput').innerHTML = cases[i].panels.map(function(text, index) {
+        var title = ['记录完整性', '可支持的判断', '待补充信息与下一步'][index];
+        return '<div class="panel"><h4>' + title + '</h4><div class="rec">' + text + '</div></div>';
+      }).join('');
+      $('scenarioRule').textContent = cases[i].rule;
+      document.querySelectorAll('[data-scenario]').forEach(function(button) {
+        button.setAttribute('aria-pressed', String(Number(button.dataset.scenario) === i));
+      });
+    }
+
+    document.querySelectorAll('[data-scenario]').forEach(function(button) {
+      button.addEventListener('click', function() { select(Number(button.dataset.scenario)); });
+    });
+    select(1);
   }
 
   function renderLoop() {
@@ -624,7 +732,7 @@ nav{padding-bottom:2px}nav button{min-height:44px}
 
   // ================= 05 验证 =================
   function renderRoadmapV() {
-    var rows=[['V1 · 解释','睡眠质量与可信程度','以完整、缺失、冲突三种记录比较纯分数页与解释页','观察用户能否区分状态变化、数据不足与模型不确定性；若产生确定性误读，先改解释'],['V2 · 节律','长期作息与匹配','使用长期睡眠、活动、HR/HRV 记录测试作息与恢复解释','检查能否区分记录到的作息、个人基线变化与节律推断；无增量价值则重审'],['V3 · 运动','睡眠与白天状态到运动安排','以睡眠、白天 HR/HRV 相对个人基线和活动负荷生成不同强度的建议原型','观察建议是否能说明依据、适用条件和不确定性；不把采纳率当作健康有效性证明'],['V4 · 提醒','异常趋势提示','用不同持续时间和缺失比例的模拟趋势测试提醒','观察误读、焦虑与打扰；提示无益时调整触发条件或暂缓']];
+    var rows=[['V1 · 解释','不完整记录的理解任务','以完整、缺失、冲突三种记录比较纯分数页与解释页','观察用户能否区分状态变化、数据不足与模型不确定性；若产生确定性误读，先改解释'],['V2 · 节律','长期作息与匹配','使用长期睡眠、活动、HR/HRV 记录测试作息与恢复解释','检查能否区分记录到的作息、个人基线变化与节律推断；无增量价值则重审'],['V3 · 运动','睡眠与白天状态到运动安排','以睡眠、白天 HR/HRV 相对个人基线和活动负荷生成不同强度的建议原型','观察建议是否能说明依据、适用条件和不确定性；不把采纳率当作健康有效性证明'],['V4 · 提醒','异常趋势提示','用不同持续时间和缺失比例的模拟趋势测试提醒','观察误读、焦虑与打扰；提示无益时调整触发条件或暂缓']];
     $('roadmapV').innerHTML='<div class="tblwrap" tabindex="0" role="region" aria-label="验证计划，可横向滚动"><table><thead><tr><th>阶段</th><th>保留范围</th><th>拟开展的验证</th><th>观察指标与决策条件</th></tr></thead><tbody>'+rows.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+c+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table></div><p class="source-note">尚未执行。正式验证前明确目标人群、样本与基线，并预先约定成功及停止条件；本页不虚构通过阈值或实验成效。</p>';
   }
 
